@@ -4,16 +4,49 @@
   justify-content: center
   margin-top: 25px
 
+.event-title
+  display: flex
+  justify-content: flex-end
+
+.event-title-text
+  margin-right: 33%
+  align-self: center
+
 .edit-event
   background: #ddd
   border-radius: 10px
   box-shadow: 0 0 20px #6881b1 inset
   color: darken($color--main, 25%)
-  float: right
   font-size: 0.7em
   padding: 10px
+  margin: 10px
   text-shadow: 1px 1px #ddd
   @include hover-change(#ddd)
+
+.edit-event-title-container
+  display: flex
+  justify-content: flex-end
+
+.margin-auto
+  margin: auto
+
+.edit-event-title
+  margin-right: 10%
+  align-self: center
+  font-size: 0.7em
+  width: fit-content
+  margin-top: -3px
+
+.edit-duration-hours
+  max-width: 50px
+  padding-right: 15px
+
+.edit-duration-mins
+  max-width: 75px
+  margin-left: 25px
+
+.edit-event-buttons
+  align-self: center
 
 .event-attendees
   background: lighten($color--silver-chalice, 28%)

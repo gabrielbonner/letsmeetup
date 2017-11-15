@@ -41,6 +41,19 @@
   text-shadow: 1px 1px lighten($color--confirm, 10%)
   @include hover-change($color--confirm)
 
+.btn--disabled
+  border-radius: 10px
+  background: $color--silver-chalice
+  box-shadow: 2px 2px 2px $color--silver-chalice, 0 0 20px darken($color--mineshaft, 20%) inset
+  color: $color--mineshaft
+  text-shadow: 1px 1px lighten($color--mineshaft, 10%)
+  &:hover
+    cursor: default
+    background: $color--silver-chalice
+
+.opacity-medium
+  opacity: 0.5
+
 .datetime
   white-space: nowrap
 
