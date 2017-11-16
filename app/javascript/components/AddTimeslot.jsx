@@ -33,9 +33,9 @@ class AddTimeslot extends Component {
     if (startTime === '') {
       return this.setState({ error: 'Please fill out the time completely.' })
     } else if (this.state.timeslots.indexOf(normalizedStart) !== -1) {
-       return this.setState({ error: 'A timeslot already exists at that time.' })
+      return this.setState({ error: 'A timeslot already exists at that time.' })
     } else if (new Date(startTime) < Date.now()) {
-     return this.setState({ error: 'Timeslot must be in the future.' })
+      return this.setState({ error: 'Timeslot must be in the future.' })
     } else {
       this.callback(startTime)
       this.closeModal()
