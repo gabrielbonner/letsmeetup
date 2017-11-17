@@ -25,7 +25,7 @@ class EventsController < ApplicationController
     timeslots_json = JSONResource.new(event.timeslots_with_ranking)
     users_json = JSONResource.new(event.users)
     # is there a more Rails-y way to do this?
-    locations = Location.all.to_a.map do |location|
+    locations = Location.order("name ASC").to_a.map do |location|
       { id: location['id'], name: location['name'] }
     end
 

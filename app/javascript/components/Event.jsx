@@ -37,8 +37,6 @@ class Event extends Component {
   }
 
   toggleEditEvent() {
-    console.log(typeof(this.state.locations))
-    console.log('here', this.state.locations)
     this.setState({
       showEditMode: !this.state.showEditMode
     })
@@ -156,32 +154,33 @@ class Event extends Component {
                     </div>
                   }
                 </div>
-                <label htmlFor='locationId'>
-                  Select a Location
-                </label>
-                <select
-                  name='locationId'
-                  value={ this.state.editedLocation }
-                  onChange={ this.handleChange }
-                >
-                  {this.state.locations.map((location) =>
-                    <option value={ location.id } key={ location.id }>
-                      {location.name}
+                <div>
+                  <i className='fa fa-2x fa-map-marker'></i>
+                  <label htmlFor='locationId'>
+                    Select a Location
+                  </label>
+                  <select
+                    name='locationId'
+                    value={ this.state.editedLocation }
+                    onChange={ this.handleChange }
+                  >
+                    {this.state.locations.map((location) =>
+                      <option value={ location.id } key={ location.id }>
+                        {location.name}
+                      </option>
+                    )}
+                    <option value='0'>
+                      -- Add a New Location --
                     </option>
-                  )}
-                  <option value='0'>
-                    -- Add a New Location --
-                  </option>
-                </select>
-                {/* { this.state.locationId == '0' && this.state.errors.locationInvalid &&
-                  <div className='error-msg'>
-                    { this.state.errors.locationInvalid }
-                  </div>
-                } */}
+                  </select>
+                  {/* { this.state.locationId == '0' && this.state.errors.locationInvalid &&
+                    <div className='error-msg'>
+                      { this.state.errors.locationInvalid }
+                    </div>
+                  } */}
+                </div>
             </div>
-            <div
-              className={`new-location ${ this.state.locationId !== '0' && 'hidden'}`}
-            >
+            <div className={`new-location ${ this.state.locationId !== '0' && 'hidden'}`}>
               <div>
                 <label htmlFor='locationName'>
                   Name of New Location:
@@ -204,36 +203,24 @@ class Event extends Component {
                   onChange={ this.handleChange }
                 />
               </div>
-                <div className='event-field'>
-                  <i className='fa fa-2x fa-map-marker'></i>
-                  <input
-                    className="edit-event-location"
-                    defaultValue={ this.state.location }>
-                  </input>
-                  { this.state.errors.nameInvalid &&
-                    <div className="error-msg">
-                      { this.state.errors.nameInvalid }
-                    </div>
-                  }
+            </div>
+              <div className="opacity-medium cursor-default">
+                <div className='event-field event-final-time'>
+                  Scheduled Time: { this.state.event.time || 'TBD' }
                 </div>
-                <div className="opacity-medium cursor-default">
-                  <div className='event-field event-final-time'>
-                    Scheduled Time: { this.state.event.time || 'TBD' }
-                  </div>
-                  <button
-                    className='btn btn--disabled'
-                    disabled>
-                    Fill In Your Availability
-                  </button>
-                  <h2 className='event-attendees margin-auto'>Attendees:</h2>
-                  <ul className='user-list margin-auto'>
-                  { this.state.users.map( (user, i) =>
-                    <li className='avatar' key={i}>
-                      <img src='/images/user.png' alt='user pic' /> {user.name}
-                    </li>
-                  )}
-                  </ul>
-                </div>
+                <button
+                  className='btn btn--disabled'
+                  disabled>
+                  Fill In Your Availability
+                </button>
+                <h2 className='event-attendees margin-auto'>Attendees:</h2>
+                <ul className='user-list margin-auto'>
+                { this.state.users.map( (user, i) =>
+                  <li className='avatar' key={i}>
+                    <img src='/images/user.png' alt='user pic' /> {user.name}
+                  </li>
+                )}
+                </ul>
               </div>
             </div>
             :
