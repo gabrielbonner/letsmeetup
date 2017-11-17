@@ -24,12 +24,17 @@ class EventsController < ApplicationController
     event_json = JSONResource.new(event, serializer: EventShowSerializer)
     timeslots_json = JSONResource.new(event.timeslots_with_ranking)
     users_json = JSONResource.new(event.users)
+    # is there a more Rails-y way to do this?
+    locations = Location.all.to_a.map do |location|
+      { id: location['id'], name: location['name'] }
+    end
 
     props = {
       event: event_json,
       timeslots: timeslots_json,
       users: users_json,
-      authToken: form_authenticity_token
+      authToken: form_authenticity_token,
+      locations: locations.to_json
     }
 
     respond_to do |format|

@@ -12,10 +12,13 @@ class Event extends Component {
       location: this.props.event.location,
       event: this.props.event,
       users: this.props.users,
+      // TODO: Parse this server-side
+      locations: JSON.parse(this.props.locations),
       showEditMode: false,
-      editedName: null,
-      editedDurationMinutes: null,
-      editedLocation: null,
+      editedName: this.props.event.name,
+      editedDurationMinutes: 0,
+      editedLocation: this.props.event.location.name,
+      // editedLocationID: this.props.event.location.id,
       errors: {
         nameInvalid: false,
         nameInvalidMsg: '',
@@ -30,9 +33,12 @@ class Event extends Component {
     this.validateEdits = this.validateEdits.bind(this)
     this.saveEditedEvent = this.saveEditedEvent.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleDurationChange = this.handleDurationChange.bind(this)
   }
 
   toggleEditEvent() {
+    console.log(typeof(this.state.locations))
+    console.log('here', this.state.locations)
     this.setState({
       showEditMode: !this.state.showEditMode
     })
@@ -51,7 +57,7 @@ class Event extends Component {
     } else {
       errors.nameInvalid = false
     }
-    if (this.state.editedDurationMinutes === '') {
+    if (this.state.editedDurationMinutes <= 0) {
       errors.durationInvalid = 'Event duration time must be greater than 0 minutes'
     } else {
       errors.durationInvalid = false
@@ -77,6 +83,17 @@ class Event extends Component {
     })
   }
 
+  handleDurationChange(e) {
+    const hoursInMinutes = parseInt(this.refs.hours.value, 10) * 60
+    const minutes = parseInt(this.refs.minutes.value, 10)
+    this.setState({
+      editedDurationMinutes: hoursInMinutes + minutes
+    })
+    setTimeout(() => {
+      console.log(`editedDurationMinutes = ${this.state.editedDurationMinutes}`)
+    }, 500)
+  }
+
   render() {
     const durMins = this.state.duration_minutes % 60
     const durHours = Math.floor((this.state.duration_minutes - durMins) % 600 / 60)
@@ -88,11 +105,12 @@ class Event extends Component {
             ?
             <div>
               <h1 className="event-title edit-event-title-container">
+                {/* TODO: Make editedName field have same functionality
+                  as other fields when toggleEditMode is executed twice */}
                 <input
                   className="edit-event-title event-title"
                   name="editedName"
-                  defaultValue={ this.state.name }
-                  value={ this.state.editedName }
+                  defaultValue={ this.state.editedName }
                   onChange={ this.handleChange }>
                 </input>
                 <div className="edit-event-buttons">
@@ -119,13 +137,18 @@ class Event extends Component {
                   <input type="number"
                     className="edit-duration-hours"
                     name="hours"
+                    ref="hours"
+                    min="0"
                     defaultValue={ durHours }
-                    onChange={ this.handleChange }>
+                    onChange={ this.handleDurationChange }>
                   </input> hrs
                   <input type="number"
                     className="edit-duration-mins"
                     name="minutes"
-                    defaultValue={ durMins }>
+                    ref="minutes"
+                    min="0"
+                    defaultValue={ durMins }
+                    onChange={ this.handleDurationChange }>
                   </input> min
                   { this.state.errors.nameInvalid &&
                     <div className="error-msg">
@@ -133,6 +156,54 @@ class Event extends Component {
                     </div>
                   }
                 </div>
+                <label htmlFor='locationId'>
+                  Select a Location
+                </label>
+                <select
+                  name='locationId'
+                  value={ this.state.editedLocation }
+                  onChange={ this.handleChange }
+                >
+                  {this.state.locations.map((location) =>
+                    <option value={ location.id } key={ location.id }>
+                      {location.name}
+                    </option>
+                  )}
+                  <option value='0'>
+                    -- Add a New Location --
+                  </option>
+                </select>
+                {/* { this.state.locationId == '0' && this.state.errors.locationInvalid &&
+                  <div className='error-msg'>
+                    { this.state.errors.locationInvalid }
+                  </div>
+                } */}
+            </div>
+            <div
+              className={`new-location ${ this.state.locationId !== '0' && 'hidden'}`}
+            >
+              <div>
+                <label htmlFor='locationName'>
+                  Name of New Location:
+                </label>
+                <input
+                  type='text'
+                  name='locationName'
+                  value={ this.state.locationName }
+                  onChange={ this.handleChange }
+                />
+              </div>
+              <div>
+                <label htmlFor='locationAddress'>
+                  Address of New Location:
+                </label>
+                <input
+                  type='text'
+                  name='locationAddress'
+                  value={ this.state.locationAddress }
+                  onChange={ this.handleChange }
+                />
+              </div>
                 <div className='event-field'>
                   <i className='fa fa-2x fa-map-marker'></i>
                   <input
