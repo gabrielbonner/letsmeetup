@@ -6,17 +6,22 @@ class Event extends Component {
   constructor(props) {
     super(props)
 
+    const durMins = this.props.event.duration_minutes % 60
+    const durHours = Math.floor((this.props.event.duration_minutes - durMins) % 600 / 60)
+
     this.state = {
       name: this.props.event.name,
       duration_minutes: this.props.event.duration_minutes,
       location: this.props.event.location,
       event: this.props.event,
       users: this.props.users,
-      // TODO: Parse this server-side
+      // TODO: Serialize this server-side
       locations: JSON.parse(this.props.locations),
       showEditMode: false,
+      durMins: durMins,
+      durHours: durHours,
+      editedDurationMinutes: durMins + durHours,
       editedName: this.props.event.name,
-      editedDurationMinutes: 0,
       editedLocation: this.props.event.location.name,
       // editedLocationID: this.props.event.location.id,
       errors: {
@@ -55,7 +60,7 @@ class Event extends Component {
     } else {
       errors.nameInvalid = false
     }
-    if (this.state.editedDurationMinutes <= 0) {
+    if (this.state.editedDurationMinutes === 0) {
       errors.durationInvalid = 'Event duration time must be greater than 0 minutes'
     } else {
       errors.durationInvalid = false
@@ -66,11 +71,11 @@ class Event extends Component {
       errors.locationInvalid = false
     }
 
-    { /* TODO: fix me, need to remove errors with valid input */ }
     if (Object.keys(errors).some( key => errors[key])) {
       this.setState({ errors })
       return
     } else {
+      this.setState({ errors })
       this.saveEditedEvent()
     }
 
@@ -95,9 +100,6 @@ class Event extends Component {
   }
 
   render() {
-    const durMins = this.state.duration_minutes % 60
-    const durHours = Math.floor((this.state.duration_minutes - durMins) % 600 / 60)
-
     return (
       <div className='card-container'>
         <div className='card-body'>
@@ -139,7 +141,7 @@ class Event extends Component {
                     name="hours"
                     ref="hours"
                     min="0"
-                    defaultValue={ durHours }
+                    defaultValue={ this.state.durHours }
                     onChange={ this.handleDurationChange }>
                   </input> hrs
                   <input type="number"
@@ -147,7 +149,7 @@ class Event extends Component {
                     name="minutes"
                     ref="minutes"
                     min="0"
-                    defaultValue={ durMins }
+                    defaultValue={ this.state.durMins }
                     onChange={ this.handleDurationChange }>
                   </input> min
                   { this.state.errors.durationInvalid &&
