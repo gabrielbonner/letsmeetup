@@ -61,17 +61,19 @@ class Event extends Component {
       errors.durationInvalid = false
     }
     if (this.state.editedLocation === '') {
-      errors.locationInvalid = 'Event location is required'
+      errors.editedLocation = 'Event location is required'
     } else {
       errors.locationInvalid = false
     }
 
-    if (errors.nameInvalid || errors.durationInvalid || errors.locationInvalid) {
-      console.log('Error, not submitting to saveEditedEvent()')
+    { /* TODO: fix me, need to remove errors with valid input */ }
+    if (Object.keys(errors).some( key => errors[key])) {
+      this.setState({ errors })
       return
     } else {
       this.saveEditedEvent()
     }
+
   }
 
   handleChange(e) {
@@ -148,9 +150,9 @@ class Event extends Component {
                     defaultValue={ durMins }
                     onChange={ this.handleDurationChange }>
                   </input> min
-                  { this.state.errors.nameInvalid &&
+                  { this.state.errors.durationInvalid &&
                     <div className="error-msg">
-                      { this.state.errors.nameInvalid }
+                      { this.state.errors.durationInvalid }
                     </div>
                   }
                 </div>
@@ -173,11 +175,11 @@ class Event extends Component {
                       -- Add a New Location --
                     </option>
                   </select>
-                  {/* { this.state.locationId == '0' && this.state.errors.locationInvalid &&
+                  { this.state.errors.locationInvalid &&
                     <div className='error-msg'>
                       { this.state.errors.locationInvalid }
                     </div>
-                  } */}
+                  }
                 </div>
             </div>
             <div className={`new-location ${ this.state.locationId !== '0' && 'hidden'}`}>
