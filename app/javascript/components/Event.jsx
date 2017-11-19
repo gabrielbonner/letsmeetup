@@ -22,15 +22,15 @@ class Event extends Component {
       durHours: durHours,
       editedDurationMinutes: durMins + durHours,
       editedName: this.props.event.name,
-      editedLocation: this.props.event.location.name,
-      // editedLocationID: this.props.event.location.id,
+      editedLocation: this.props.event.location,
+      newLocationName: '',
+      newLocationAddress: '',
       errors: {
         nameInvalid: false,
-        nameInvalidMsg: '',
         durationInvalid: false,
-        durationInvalidMsg: '',
         locationInvalid: false,
-        locationInvalidMsg: ''
+        newLocationNameInvalid: false,
+        newLocationAddressInvalid: false
       }
     }
 
@@ -69,6 +69,16 @@ class Event extends Component {
       errors.editedLocation = 'Event location is required'
     } else {
       errors.locationInvalid = false
+    }
+    if (this.state.editedLocation === '0' && this.state.newLocationName === '') {
+      errors.newLocationNameInvalid = 'New location name required'
+    } else {
+      errors.newLocationNameInvalid = false
+    }
+    if (this.state.editedLocation === '0' && this.state.newLocationAddress === '') {
+      errors.newLocationAddressInvalid = 'New location address required'
+    } else {
+      errors.newLocationAddressInvalid = false
     }
 
     if (Object.keys(errors).some( key => errors[key])) {
@@ -164,12 +174,12 @@ class Event extends Component {
                     Select a Location
                   </label>
                   <select
-                    name='locationId'
+                    name='editedLocation'
                     value={ this.state.editedLocation }
                     onChange={ this.handleChange }
                   >
                     {this.state.locations.map((location) =>
-                      <option value={ location.id } key={ location.id }>
+                      <option value={ location.name } key={ location.name }>
                         {location.name}
                       </option>
                     )}
@@ -184,29 +194,39 @@ class Event extends Component {
                   }
                 </div>
             </div>
-            <div className={`new-location ${ this.state.locationId !== '0' && 'hidden'}`}>
+            <div className={`new-location ${ this.state.editedLocation !== '0' && 'hidden'}`}>
               <div>
                 <label htmlFor='locationName'>
                   Name of New Location:
                 </label>
                 <input
                   type='text'
-                  name='locationName'
+                  name='newLocationName'
                   value={ this.state.locationName }
                   onChange={ this.handleChange }
                 />
               </div>
+              { this.state.errors.newLocationNameInvalid &&
+                <div className='error-msg'>
+                  { this.state.errors.newLocationNameInvalid }
+                </div>
+              }
               <div>
                 <label htmlFor='locationAddress'>
                   Address of New Location:
                 </label>
                 <input
                   type='text'
-                  name='locationAddress'
+                  name='newLocationAddress'
                   value={ this.state.locationAddress }
                   onChange={ this.handleChange }
                 />
               </div>
+              { this.state.errors.newLocationAddressInvalid &&
+                <div className='error-msg'>
+                  { this.state.errors.newLocationAddressInvalid }
+                </div>
+              }
             </div>
               <div className="opacity-medium cursor-default">
                 <div className='event-field event-final-time'>
