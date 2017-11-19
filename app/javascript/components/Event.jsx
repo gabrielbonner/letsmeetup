@@ -193,41 +193,41 @@ class Event extends Component {
                     </div>
                   }
                 </div>
-            </div>
-            <div className={`new-location ${ this.state.editedLocation !== '0' && 'hidden'}`}>
-              <div>
-                <label htmlFor='locationName'>
-                  Name of New Location:
-                </label>
-                <input
-                  type='text'
-                  name='newLocationName'
-                  value={ this.state.locationName }
-                  onChange={ this.handleChange }
-                />
               </div>
-              { this.state.errors.newLocationNameInvalid &&
-                <div className='error-msg'>
-                  { this.state.errors.newLocationNameInvalid }
+              <div className={`new-location ${ this.state.editedLocation === '0' && 'new-location-div' } ${ this.state.editedLocation !== '0' && 'hidden'}`}>
+                <div className='card-fields'>
+                  <label htmlFor='locationName'>
+                    Name of New Location:
+                  </label>
+                  <input
+                    type='text'
+                    name='newLocationName'
+                    value={ this.state.locationName }
+                    onChange={ this.handleChange }
+                  />
                 </div>
-              }
-              <div>
-                <label htmlFor='locationAddress'>
-                  Address of New Location:
-                </label>
-                <input
-                  type='text'
-                  name='newLocationAddress'
-                  value={ this.state.locationAddress }
-                  onChange={ this.handleChange }
-                />
+                { this.state.errors.newLocationNameInvalid &&
+                  <div className='error-msg'>
+                    { this.state.errors.newLocationNameInvalid }
+                  </div>
+                }
+                <div className='card-fields'>
+                  <label htmlFor='locationAddress'>
+                    Address of New Location:
+                  </label>
+                  <input
+                    type='text'
+                    name='newLocationAddress'
+                    value={ this.state.locationAddress }
+                    onChange={ this.handleChange }
+                  />
+                </div>
+                { this.state.errors.newLocationAddressInvalid &&
+                  <div className='error-msg'>
+                    { this.state.errors.newLocationAddressInvalid }
+                  </div>
+                }
               </div>
-              { this.state.errors.newLocationAddressInvalid &&
-                <div className='error-msg'>
-                  { this.state.errors.newLocationAddressInvalid }
-                </div>
-              }
-            </div>
               <div className="opacity-medium cursor-default">
                 <div className='event-field event-final-time'>
                   Scheduled Time: { this.state.event.time || 'TBD' }
