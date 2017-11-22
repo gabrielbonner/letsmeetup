@@ -49,6 +49,7 @@ class Event extends Component {
 
   saveEditedEvent() {
     console.log('Saving event...')
+
   }
 
   validateEdits() {
@@ -83,6 +84,7 @@ class Event extends Component {
 
     if (Object.keys(errors).some( key => errors[key])) {
       this.setState({ errors })
+      console.log('Invalid field, not saving event...')
       return
     } else {
       this.setState({ errors })
@@ -194,7 +196,9 @@ class Event extends Component {
                   }
                 </div>
               </div>
-              <div className={`new-location ${ this.state.editedLocation === '0' && 'new-location-div' } ${ this.state.editedLocation !== '0' && 'hidden'}`}>
+              <div className={`new-location
+                ${ this.state.editedLocation === '0' && 'new-location-div' }
+                ${ this.state.editedLocation !== '0' && 'hidden' } `}>
                 <div className='card-fields'>
                   <label htmlFor='locationName'>
                     Name of New Location:

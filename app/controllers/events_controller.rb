@@ -68,6 +68,19 @@ class EventsController < ApplicationController
     )
   end
 
+  def edit
+    # find event that it being edited
+    # IF locationId == 0
+      # create and save new location
+    # ELSE
+      # set location to params[:locationId]
+    # edit event
+    # IF it saves
+      # render the event show page
+    # ELSE
+      # send the appropriate error message
+  end
+
   def create
     event_location = @location ? @location.id : event_params[:locationId]
 
