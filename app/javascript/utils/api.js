@@ -23,3 +23,11 @@ export const updatePreference = (preferenceId, preferenceType, authToken) => {
     preference_type: preferenceType
   })
 }
+
+export const updateEvent = (params) => {
+  axios.defaults.headers.common['X-CSRF-Token'] = params.authToken
+  console.log('here', params)
+  return axios.patch(`/events/${params.slug}`, {
+    event: params
+  })
+}

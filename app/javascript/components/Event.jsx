@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { formatDuration } from '../utils/dateFormat'
+import { updateEvent } from '../utils/api'
 
 class Event extends Component {
   constructor(props) {
     super(props)
+    console.log('props =', props)
 
     const durMins = this.props.event.duration_minutes % 60
     const durHours = Math.floor((this.props.event.duration_minutes - durMins) % 600 / 60)
@@ -15,6 +17,7 @@ class Event extends Component {
       location: this.props.event.location,
       event: this.props.event,
       users: this.props.users,
+      authToken: this.props.authToken,
       // TODO: Serialize this server-side
       locations: JSON.parse(this.props.locations),
       showEditMode: false,
@@ -49,7 +52,22 @@ class Event extends Component {
 
   saveEditedEvent() {
     console.log('Saving event...')
-
+    // assemble event params
+    const eventParams = {
+      slug: this.state.event.slug,
+      eventId: this.state.event.id,
+      name: this.state.editedName,
+      durationMinutes: this.state.editedDurationMinutes,
+      locationId: this.state.editedLocation,
+      locationName: this.state.editedLocationName,
+      locationAddress: this.state.editLocationAddress,
+      authToken: this.state.authToken,
+    }
+    console.log('eventParams =', eventParams);
+    // send eventParams
+    updateEvent(eventParams)
+    // if saved successfully, new page will render
+    // if not saved successfully, show flash error message
   }
 
   validateEdits() {

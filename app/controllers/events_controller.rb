@@ -68,7 +68,14 @@ class EventsController < ApplicationController
     )
   end
 
-  def edit
+  def update
+    p 'Here!!!'
+    p event_params[:id]
+    puts "event_params[:id] ^ "
+    p event_params[:eventId]
+    puts "event_params[:eventId] ^ "
+    p event_params[:event]
+    puts "event_params[:event] ^ "
     # find event that it being edited
     # IF locationId == 0
       # create and save new location
@@ -107,8 +114,11 @@ class EventsController < ApplicationController
 
   def event_params
     params.permit(
+      :id,
+      :event,
       :name,
       :durationMinutes,
+      :duration_minutes,
       :locationId,
       :locationName,
       :locationAddress,
